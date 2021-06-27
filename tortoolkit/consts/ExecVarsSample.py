@@ -44,9 +44,9 @@ except:
         
         # MEGA CONFIG
         MEGA_ENABLE = True
-        MEGA_API = nr4mlSYL
-        MEGA_UNAME = cainlord5@gmail.com
-        MEGA_PASS = dragonia33
+        MEGA_API = "nr4mlSYL"
+        MEGA_UNAME = "cainlord5@gmail.com"
+        MEGA_PASS = "dragonia33"
 
         # The base direcory to which the files will be upload if using RCLONE
         RCLONE_BASE_DIR = os.environ.get("RCLONE_BASE_DIR", "/")
