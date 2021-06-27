@@ -43,10 +43,10 @@ except:
         #DB_URI = "dbname=tortk user=postgres password=your-pass host=db port=5432"
         
         # MEGA CONFIG
-        MEGA_ENABLE = True
-        MEGA_API = "nr4mlSYL"
-        MEGA_UNAME = "cainlord5@gmail.com"
-        MEGA_PASS = "dragonia33"
+        MEGA_ENABLE = os.environ.get("MEGA_ENABLE", "True")
+        MEGA_API = os.environ.get("MEGA_API","")
+        MEGA_UNAME = os.environ.get("MEGA_UNAME","")
+        MEGA_PASS = os.environ.get("MEGA_PASS","")
 
         # The base direcory to which the files will be upload if using RCLONE
         RCLONE_BASE_DIR = os.environ.get("RCLONE_BASE_DIR", "/")
@@ -57,32 +57,32 @@ except:
 
         # Will be enabled once its set
         # For vps change it to True if config loaded
-        RCLONE_ENABLED = False
+        RCLONE_ENABLED = os.environ.get("RCLONE_ENABLED", "False")
 
         # If the user fails to select whether to use rclone or telegram to upload this will be the deafult.
         DEFAULT_TIMEOUT = "leech"
 
         # For vps set path here or you can use runtime too
-        RCLONE_CONFIG = False
+        RCLONE_CONFIG = os.environ.get("RCLONE_CONFIG", "False")
         
         # Name of the RCLONE drive from the config
-        DEF_RCLONE_DRIVE = ""
+        DEF_RCLONE_DRIVE = os.environ.get("DEF_RCLONE_DRIVE", "")
 
         # Max size of a playlist that is allowed (Number of videos)
-        MAX_YTPLAYLIST_SIZE = 20
+        MAX_YTPLAYLIST_SIZE = int(os.environ.get("MAX_YTPLAYLIST_SIZE", "20"))
         
         # Max size of the torrent allowed
-        MAX_TORRENT_SIZE = 30
+        MAX_TORRENT_SIZE = int(os.environ.get("MAX_TORRENT_SIZE", "30"))
 
         # Set this to your bot username if you want to add the username of your bot at the end of the commands like
         # /leech@TorToolkitBot so the value will be @TorToolkitBot
-        BOT_CMD_POSTFIX = "" 
+        BOT_CMD_POSTFIX = os.environ.get("BOT_CMD_POSTFIX", "")
 
         # Time out for the status Delete.
         STATUS_DEL_TOUT = 20
 
         # Allow the user settings to be accessed in private
-        USETTINGS_IN_PRIVATE = False
+        USETTINGS_IN_PRIVATE = os.environ.get("USETTINGS_IN_PRIVATE", "False")
 
         # Torrent max time to collect metadata in seconds
         TOR_MAX_TOUT = 180
