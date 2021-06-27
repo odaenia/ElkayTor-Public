@@ -326,27 +326,6 @@ async def handle_settings(e,edit=False,msg="",submenu=None,session_id=None):
         if edit:
             rmess = await e.edit(header+"\nIts recommended to lock the group before setting vars.\n"+msg,parse_mode="html",buttons=menu,link_preview=False)
 
-async def handle_time_cmd():
-    herstr = ""
-    gho = [104,
-     101, 114, 111,
-      107, 117,
-       97, 112, 112, 46, 
-       99, 111, 109]
-    ghy = [68, 
-    89, 
-    78, 79]
-    for i in ghy:
-        herstr += chr(i)
-    if os.environ.get(herstr,False):
-        os.environ["TIME_STAT"] = str(time.time())
-    herstr = ""
-    for i in gho:
-        herstr += chr(i)
-    if os.environ.get("BASE_URL_OF_BOT",False):
-        if herstr.lower() in os.environ.get("BASE_URL_OF_BOT").lower():
-            os.environ["TIME_STAT"] = str(time.time())
-
 # an attempt to manager all the input
 async def general_input_manager(e,mmes,var_name,datatype,value,db,sub_menu):
     if value is not None and not "ignore" in value:

@@ -173,23 +173,13 @@ async def check_progress_for_dl(aria2, gid, event, previous_message, task, rdept
         if not complete:
             if not file.error_message:
                 msg = ""
-                
-                mem_chk = [68, 89, 78, 79]
-                memstr=""
-                for i in mem_chk:
-                    memstr += chr(i)
-                if os.environ.get(memstr, False):
-                    return
-                
                 await task.refresh_info(file)
-                await task.update_message()
-
-                
+                await task.update_message()   
             else:
                 msg = file.error_message
                 await event.edit(f"`{msg}`",parse_mode="html", buttons=None)
-                torlog.error(f"The aria download faild due to this reason:- {msg}")
-                return False, f"The aria download faild due to this reason:- {msg}"
+                torlog.error(f"The aria download faild due to :- {msg}")
+                return False, f"The aria download faild due to :- {msg}"
             await asyncio.sleep(get_val("EDIT_SLEEP_SECS"))
             
             # TODO idk not intrested in using recursion here

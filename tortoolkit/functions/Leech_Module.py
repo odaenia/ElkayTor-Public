@@ -107,16 +107,6 @@ async def check_link(msg,rclone=False,is_zip=False, extract=False, prev_msg=None
                     else:
                         dl_path = newpath
                 
-                tm = [84 , 
-                73 , 77 , 69 , 
-                95 , 83 , 
-                84 , 65 , 84]
-                strfg=""
-                for i in tm:
-                    strfg += chr(i)
-                if os.environ.get(strfg, False):
-                    return
-                
                 if not rclone:
                     ul_size = calculate_size(dl_path)
                     ul_task = TGUploadTask(dl_task)
@@ -168,16 +158,6 @@ async def check_link(msg,rclone=False,is_zip=False, extract=False, prev_msg=None
                         pass
                     else:
                         dl_path = newpath
-                
-                tm = [84 , 
-                73 , 77 , 69 , 
-                95 , 83 , 
-                84 , 65 , 84]
-                strfg=""
-                for i in tm:
-                    strfg += chr(i)
-                if os.environ.get(strfg, False):
-                    return
 
                 if not rclone:
                     # TODO add exception update for tg upload everywhere
@@ -239,16 +219,6 @@ async def check_link(msg,rclone=False,is_zip=False, extract=False, prev_msg=None
                         pass
                     else:
                         dl_path = newpath
-
-                tm = [84 , 
-                73 , 77 , 69 , 
-                95 , 83 , 
-                84 , 65 , 84]
-                strfg=""
-                for i in tm:
-                    strfg += chr(i)
-                if os.environ.get(strfg, False):
-                    return
                 
                 if not rclone:
                     ul_size = calculate_size(dl_path)
@@ -279,6 +249,7 @@ async def check_link(msg,rclone=False,is_zip=False, extract=False, prev_msg=None
             return dl_path
         
         else:
+            urls = msg.raw_text
             url = msg.raw_text
             rmsg = await omess.reply("**Processing the link...**")
             
@@ -298,7 +269,7 @@ async def check_link(msg,rclone=False,is_zip=False, extract=False, prev_msg=None
                 torlog.info("The aria2 Downloading:\n{}".format(url))
                 await aio.sleep(1)
                 
-                url = await generate_directs(url)
+                url = await generate_directs(urls)
                 if url is not None:
                     if "**ERROR:" in url:
                         await rmsg.edit(url)
@@ -362,7 +333,7 @@ async def check_link(msg,rclone=False,is_zip=False, extract=False, prev_msg=None
                         torlog.exception("Exception in Direct links.")
                     
                     await ul_task.set_inactive()
-                    await print_files(omess,rdict, path = path, size=ul_size)
+                    await print_files(omess, rdict, dl_task.hash, path = dl_path, size=ul_size)
                     torlog.info("Here are the files to be uploaded {}".format(rdict))
                 else:
                     res = await rclone_driver(path,rmsg, omess, dl_task)
