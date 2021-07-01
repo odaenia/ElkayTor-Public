@@ -48,7 +48,7 @@ Following are some awesome features offered by this bot:-
 # Deployment
 
 ## ***Heroku***
-### For Heroku users New repo will come soon (This repo will not work on heroku)
+### Only Leech To Telegram Will work on Heroku
 [![Deploy](https://telegra.ph/file/e7d224c45cf1d106a28fa.png)](https://heroku.com/deploy?template=https://github.com/sherlockia2/ElkayTorToolkit/)
 
 ## ***Zeet***
