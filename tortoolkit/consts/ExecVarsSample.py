@@ -19,7 +19,7 @@ except:
         OWNER_ID = os.environ.get("OWNER_ID", "")
         
         # Google Drive Index Link should include the base dir also See readme for more info
-        GD_INDEX_URL = os.environ.get("GD_INDEX_URL", "False")
+        GD_INDEX_URL = False
 
         # Time to wait before edit message
         EDIT_SLEEP_SECS = 5
@@ -49,7 +49,7 @@ except:
         MEGA_PASS = os.environ.get("MEGA_PASS","")
 
         # The base direcory to which the files will be upload if using RCLONE
-        RCLONE_BASE_DIR = os.environ.get("RCLONE_BASE_DIR", "/")
+        RCLONE_BASE_DIR = "/"
 
         # This value will be considered only if Rclone is True - this may be defied now ;)
         # Cuz at least one needs to be Ture at a time either RCLONE or Leech.
@@ -57,16 +57,16 @@ except:
 
         # Will be enabled once its set
         # For vps change it to True if config loaded
-        RCLONE_ENABLED = os.environ.get("RCLONE_ENABLED", "False")
+        RCLONE_ENABLED = False
 
         # If the user fails to select whether to use rclone or telegram to upload this will be the deafult.
         DEFAULT_TIMEOUT = "leech"
 
         # For vps set path here or you can use runtime too
-        RCLONE_CONFIG = os.environ.get("RCLONE_CONFIG", "False")
+        RCLONE_CONFIG = False
         
         # Name of the RCLONE drive from the config
-        DEF_RCLONE_DRIVE = os.environ.get("DEF_RCLONE_DRIVE", "")
+        DEF_RCLONE_DRIVE = ""
 
         # Max size of a playlist that is allowed (Number of videos)
         MAX_YTPLAYLIST_SIZE = int(os.environ.get("MAX_YTPLAYLIST_SIZE", "20"))
