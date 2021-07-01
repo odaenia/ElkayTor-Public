@@ -27,29 +27,7 @@
     "AUTH_CHANNEL": {
       "description": "ALLOWED USERS [ids of user or supergroup] seperate by spaces",
       "value": ""
-    },
-    "GD_INDEX_URL": {
-      "description": "gdrive index link",
-      "required": false
-    },
-    "RCLONE_ENABLED": {
-      "description": "Will be enabled once its set",
-      "value": "False"
-    },
-    "RCLONE_CONFIG": {
-      "description": "path to rclone.conf, if you uploaded rclone.conf, it should be at /app/rclone.conf",
-      "value": "/app/rclone.conf",
-      "required": false
-    },
-    "DEF_RCLONE_DRIVE": {
-      "description": "Name of the RCLONE drive from the config",
-      "required": false
-    },
-    "RCLONE_BASE_DIR": {
-      "description": "The base direcory to which the files will be upload if using rclone",
-      "value": "/",
-      "required": false
-    },
+    }
     "MAX_YTPLAYLIST_SIZE": {
       "description": " Max size of a playlist that is allowed (Number of videos)",
       "value": "20",
