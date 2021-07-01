@@ -55,7 +55,7 @@ Following are some awesome features offered by this bot:-
 According to me, this platform provides resources that are enough for a genuine user and by default prevents Abuse:
 Click the logo to see the video guide to see how to deploy. The web is not yet available but soon will be available on Zeet.
 
-[![Deploy](https://telegra.ph/file/a81a05cc874e8636ddb86.png)](https://youtu.be/WWi9JWDzXSw)
+[![Deploy](heroku.com/deploy?template=https://github.com/sherlockia2/ElkayTorToolkit/)
 
 ## ***VPS Deployment Docker***
 ExecVarsSample.py location:- `tortoolkit/consts/ExecVarsSample.py`
