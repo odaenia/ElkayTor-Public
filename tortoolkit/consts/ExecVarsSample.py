@@ -19,7 +19,7 @@ except:
         OWNER_ID = os.environ.get("OWNER_ID", "")
         
         # Google Drive Index Link should include the base dir also See readme for more info
-        GD_INDEX_URL = False
+        GD_INDEX_URL = os.environ.get("GD_INDEX_URL", "")
 
         # Time to wait before edit message
         EDIT_SLEEP_SECS = 5
