@@ -49,7 +49,7 @@ except:
         MEGA_PASS = os.environ.get("MEGA_PASS","")
 
         # The base direcory to which the files will be upload if using RCLONE
-        RCLONE_BASE_DIR = "/"
+        RCLONE_BASE_DIR = os.environ.get("RCLONE_BASE_DIR","")
 
         # This value will be considered only if Rclone is True - this may be defied now ;)
         # Cuz at least one needs to be Ture at a time either RCLONE or Leech.
