@@ -63,24 +63,26 @@ def get_entities(msg):
 
 async def check_link(msg,rclone=False,is_zip=False, extract=False, prev_msg=None):
     # here moslty rmess = Reply message which the bot uses to update
-    # omess = original message from the sender user 
+    # omess = original message from the sender user
+    torlog.info("Inside check_link()")
     omess = msg
-    msg = await msg.get_reply_message()
-
+    #msg = await msg.get_reply_message()
+    torlog.info("Inside check_link() - LOG 1")
     if extract:
         mess = f"You chose to extract the archive <a href='tg://user?id={omess.sender_id}'>ENTER PASSWORD IF ANY.</a>\n Use <code>/setpass {omess.id} password-here</code>"
         omess.client.dl_passwords[omess.id] = [str(omess.sender_id), None]
         await omess.reply(mess, parse_mode="html")
-
+    torlog.info("Inside check_link() - LOG 3")
+    
     if msg is None:
+        torlog.info("Inside check_link() - msg is none")
         urls = None
-
     elif msg.document is not None:
         name = None
         for i in msg.document.attributes:
             if isinstance(i,types.DocumentAttributeFilename):
                 name = i.file_name
-        
+     
         if name is None:
             await omess.reply("This is not a torrent file to leech from. Send <code>.torrent</code> file",parse_mode="html")
         elif name.lower().endswith(".torrent"):
@@ -137,6 +139,7 @@ async def check_link(msg,rclone=False,is_zip=False, extract=False, prev_msg=None
             await omess.reply("This is not a torrent file to leech from. Send <code>.torrent</code> file",parse_mode="html")
 
     elif msg.raw_text is not None:
+        torlog.info("Inside check_link() - LOG 2")
         if msg.raw_text.lower().startswith("magnet:"):
             rmess = await omess.reply("Scanning....")
             
@@ -249,6 +252,7 @@ async def check_link(msg,rclone=False,is_zip=False, extract=False, prev_msg=None
             return dl_path
         
         else:
+            torlog.info("Found the LINK")
             urls = msg.raw_text
             url = msg.raw_text
             rmsg = await omess.reply("**Processing the link...**")

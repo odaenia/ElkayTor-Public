@@ -35,7 +35,7 @@ def add_handlers(bot: TelegramClient):
     
     bot.add_event_handler(
         handle_leech_command,
-        events.NewMessage(pattern=command_process(get_command("LEECH")),
+        events.NewMessage(pattern=r"https?://(?:[-\w.]|(?:%[\da-fA-F]{2}))+",
         chats=get_val("ALD_USR"))
     )
     
@@ -222,61 +222,59 @@ def add_handlers(bot: TelegramClient):
 #*********** Handlers Below ***********
 
 async def handle_leech_command(e):
-    if not e.is_reply:
-        await e.reply("Reply to a link or magnet")
+    torlog.info("Inside Handle_leech_command")
+    rclone = False
+    tsp = time.time()
+    buts = [[KeyboardButtonCallback("To Telegram",data=f"leechselect tg {tsp}")]]
+    if await get_config() is not None:
+        buts.append(
+            [KeyboardButtonCallback("To Drive",data=f"leechselect drive {tsp}")]
+        )
+    # tsp is used to split the callbacks so that each download has its own callback
+    # cuz at any time there are 10-20 callbacks linked for leeching XD
+    
+    buts.append(
+            [KeyboardButtonCallback("Upload in a ZIP.[Toggle]", data=f"leechzip toggle {tsp}")]
+    )
+    buts.append(
+            [KeyboardButtonCallback("Extract from Archive.[Toggle]", data=f"leechzipex toggleex {tsp}")]
+    )
+    
+    conf_mes = await e.reply(f"First click if you want to zip the contents or extract as an archive (only one will work at a time) then...\n\n<b>Choose where to upload your files:-</b>\nThe files will be uploaded to default destination: <b>{get_val('DEFAULT_TIMEOUT')}</b> after 60 sec of no action by user.</u>\n\n<b>Supported archives to extract:</b>\nzip, 7z, tar, gzip2, iso, wim, rar, tar.gz, tar.bz2",parse_mode="html",buttons=buts)
+    
+    # zip check in background
+    ziplist = await get_zip_choice(e,tsp)
+    zipext = await get_zip_choice(e,tsp,ext=True)
+    
+    # blocking leech choice 
+    choice = await get_leech_choice(e,tsp)
+    
+    # zip check in backgroud end
+    await get_zip_choice(e,tsp,ziplist,start=False)
+    await get_zip_choice(e,tsp,zipext,start=False,ext=True)
+    is_zip = ziplist[1]
+    is_ext = zipext[1]
+    
+    
+    # Set rclone based on choice
+    if choice == "drive":
+        rclone = True
     else:
         rclone = False
-        tsp = time.time()
-        buts = [[KeyboardButtonCallback("To Telegram",data=f"leechselect tg {tsp}")]]
-        if await get_config() is not None:
-            buts.append(
-                [KeyboardButtonCallback("To Drive",data=f"leechselect drive {tsp}")]
-            )
-        # tsp is used to split the callbacks so that each download has its own callback
-        # cuz at any time there are 10-20 callbacks linked for leeching XD
-           
-        buts.append(
-                [KeyboardButtonCallback("Upload in a ZIP.[Toggle]", data=f"leechzip toggle {tsp}")]
-        )
-        buts.append(
-                [KeyboardButtonCallback("Extract from Archive.[Toggle]", data=f"leechzipex toggleex {tsp}")]
-        )
-        
-        conf_mes = await e.reply(f"First click if you want to zip the contents or extract as an archive (only one will work at a time) then...\n\n<b>Choose where to upload your files:-</b>\nThe files will be uploaded to default destination: <b>{get_val('DEFAULT_TIMEOUT')}</b> after 60 sec of no action by user.</u>\n\n<b>Supported archives to extract:</b>\nzip, 7z, tar, gzip2, iso, wim, rar, tar.gz, tar.bz2",parse_mode="html",buttons=buts)
-
-        # zip check in background
-        ziplist = await get_zip_choice(e,tsp)
-        zipext = await get_zip_choice(e,tsp,ext=True)
-        
-        # blocking leech choice 
-        choice = await get_leech_choice(e,tsp)
-        
-        # zip check in backgroud end
-        await get_zip_choice(e,tsp,ziplist,start=False)
-        await get_zip_choice(e,tsp,zipext,start=False,ext=True)
-        is_zip = ziplist[1]
-        is_ext = zipext[1]
-        
-        
-        # Set rclone based on choice
-        if choice == "drive":
-            rclone = True
+    
+    await conf_mes.delete()
+    torlog.info("About to execute LEECH")
+    if rclone:
+        if get_val("RCLONE_ENABLED"):
+            await check_link(e,rclone, is_zip, is_ext)
         else:
-            rclone = False
-        
-        await conf_mes.delete()
-
-        if rclone:
-            if get_val("RCLONE_ENABLED"):
-                await check_link(e,rclone, is_zip, is_ext)
-            else:
-                await e.reply("<b>DRIVE IS DISABLED BY THE ADMIN</b>",parse_mode="html")
+            await e.reply("<b>DRIVE IS DISABLED BY THE ADMIN</b>",parse_mode="html")
+    else:
+        if get_val("LEECH_ENABLED"):
+            torlog.info("About to execute check_link()")
+            await check_link(e,rclone, is_zip, is_ext)
         else:
-            if get_val("LEECH_ENABLED"):
-                await check_link(e,rclone, is_zip, is_ext)
-            else:
-                await e.reply("<b>TG LEECH IS DISABLED BY THE ADMIN</b>",parse_mode="html")
-
+            await e.reply("<b>TG LEECH IS DISABLED BY THE ADMIN</b>",parse_mode="html")
 
 async def get_leech_choice(e,timestamp):
     # abstract for getting the confirm in a context
