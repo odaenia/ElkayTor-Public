@@ -40,6 +40,12 @@ def add_handlers(bot: TelegramClient):
     )
     
     bot.add_event_handler(
+        handle_leech_command,
+        events.NewMessage(pattern=r"magnet\:\?xt\=urn\:btih\:([A-F\d]+)",
+        chats=get_val("ALD_USR"))
+    )
+    
+    bot.add_event_handler(
         handle_purge_command,
         events.NewMessage(pattern=command_process(get_command("PURGE")),
         chats=get_val("ALD_USR"))
@@ -222,7 +228,6 @@ def add_handlers(bot: TelegramClient):
 #*********** Handlers Below ***********
 
 async def handle_leech_command(e):
-    torlog.info("Inside Handle_leech_command")
     rclone = False
     tsp = time.time()
     buts = [[KeyboardButtonCallback("To Telegram",data=f"leechselect tg {tsp}")]]
@@ -263,7 +268,6 @@ async def handle_leech_command(e):
         rclone = False
     
     await conf_mes.delete()
-    torlog.info("About to execute LEECH")
     if rclone:
         if get_val("RCLONE_ENABLED"):
             await check_link(e,rclone, is_zip, is_ext)
@@ -271,7 +275,6 @@ async def handle_leech_command(e):
             await e.reply("<b>DRIVE IS DISABLED BY THE ADMIN</b>",parse_mode="html")
     else:
         if get_val("LEECH_ENABLED"):
-            torlog.info("About to execute check_link()")
             await check_link(e,rclone, is_zip, is_ext)
         else:
             await e.reply("<b>TG LEECH IS DISABLED BY THE ADMIN</b>",parse_mode="html")
